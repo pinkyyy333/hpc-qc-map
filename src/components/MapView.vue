@@ -107,7 +107,7 @@ const LABEL_GAP = 8
 const LABEL_TOP_SAFE = 72
 
 const areaViews = {
-  Global: { center: [25, 20], zoom: 2 },
+  Global: { center: [8, 20], zoom: 2 },
   Americas: { center: [28, -96], zoom: 4 },
   'EuroHPC JU': { center: [51, 13], zoom: 4 },
   'Asia-Pacific': { center: [23, 109], zoom: 3 }

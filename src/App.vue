@@ -54,6 +54,10 @@
       </section>
 
       <section class="panel">
+        <TechnologyBarChart :items="technologyStats" />
+      </section>
+
+      <section class="panel">
         <div class="panel-title-row">
           <h2>Countries</h2>
           <div class="inline-actions">
@@ -114,9 +118,29 @@
 
 <script setup>
 import { computed, ref } from 'vue'
-import centers from './data/hpc_qc_centers.json'
+import rawCenters from './data/hpc_qc_centers.json'
+import providerTechMapping from './data/provider_tech_mapping.json'
 import MapView from './components/MapView.vue'
 import CenterList from './components/CenterList.vue'
+import TechnologyBarChart from './components/TechnologyBarChart.vue'
+
+const techLookup = providerTechMapping
+  .slice()
+  .sort((a, b) => b.provider.length - a.provider.length)
+
+const centers = rawCenters.map((center) => {
+  const matchedTechnologies = techLookup
+    .filter((item) => providerMatches(center.provider, item.provider))
+    .map((item) => item.technology)
+
+  const technologies = Array.from(new Set(matchedTechnologies))
+
+  return {
+    ...center,
+    technologies,
+    technologyLabel: technologies.join(' / ')
+  }
+})
 
 const mapRef = ref(null)
 const searchText = ref('')
@@ -169,6 +193,32 @@ const activeCountriesCount = computed(() => {
   return new Set(filteredCenters.value.map((item) => item.country)).size
 })
 
+const technologyStats = computed(() => {
+  const counts = filteredCenters.value.reduce((acc, center) => {
+    center.technologies.forEach((technology) => {
+      if (!acc[technology]) {
+        acc[technology] = {
+          count: 0,
+          providers: new Set()
+        }
+      }
+
+      acc[technology].count += 1
+      acc[technology].providers.add(center.provider)
+    })
+
+    return acc
+  }, {})
+
+  return Object.entries(counts)
+    .map(([name, stats]) => ({
+      name,
+      count: stats.count,
+      providers: Array.from(stats.providers).sort((a, b) => a.localeCompare(b))
+    }))
+    .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name))
+})
+
 function toggleCountry(country) {
   const next = new Set(selectedCountries.value)
   if (next.has(country)) {
@@ -202,5 +252,19 @@ function resetView() {
 function handleListSelect(center) {
   selectedCenter.value = center
   mapRef.value?.focusCenter(center)
+}
+
+function providerMatches(centerProvider, mappedProvider) {
+  const source = normalizeProvider(centerProvider)
+  const target = normalizeProvider(mappedProvider)
+
+  return source === target || source.includes(target)
+}
+
+function normalizeProvider(value) {
+  return String(value || '')
+    .toLowerCase()
+    .normalize('NFKC')
+    .replace(/[^\p{L}\p{N}]+/gu, '')
 }
 </script>

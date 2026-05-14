@@ -202,12 +202,113 @@ button {
   gap: 10px;
 }
 
+.tech-chart {
+  display: grid;
+  gap: 12px;
+}
+
+.tech-chart small {
+  color: #64748b;
+  white-space: nowrap;
+}
+
+.bar-list {
+  display: grid;
+  gap: 12px;
+}
+
+.bar-row {
+  position: relative;
+  display: grid;
+  gap: 6px;
+}
+
+.bar-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  color: #334155;
+  font-size: 13px;
+}
+
+.bar-meta span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bar-meta strong {
+  color: #162033;
+}
+
+.bar-track {
+  height: 10px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #e2e8f0;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #0f766e, #6366f1);
+}
+
+.bar-tooltip {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(100% + 8px);
+  z-index: 20;
+  display: grid;
+  gap: 4px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #162033;
+  color: #f8fafc;
+  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.24);
+  font-size: 12px;
+  line-height: 1.45;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(4px);
+  transition: 0.16s ease;
+}
+
+.bar-tooltip span {
+  color: #cbd5e1;
+}
+
+.bar-tooltip p {
+  margin: 0;
+  max-height: 96px;
+  overflow: auto;
+}
+
+.bar-row:hover .bar-tooltip,
+.bar-row:focus-within .bar-tooltip {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.chart-empty {
+  padding: 14px;
+  border-radius: 12px;
+  background: #f8fafc;
+  color: #64748b;
+  font-size: 13px;
+  text-align: center;
+}
+
 .content {
   min-width: 0;
+  min-height: 0;
   display: grid;
-  grid-template-rows: minmax(540px, 1fr) 280px;
-  gap: 18px;
-  padding: 18px;
+  grid-template-rows: 560px 320px;
+  gap: 12px;
+  padding: 12px;
 }
 
 .map-panel,
@@ -223,7 +324,7 @@ button {
 .map-toolbar {
   position: absolute;
   top: 18px;
-  left: 18px;
+  left: 64px;
   right: 18px;
   z-index: 450;
   pointer-events: none;
@@ -240,8 +341,13 @@ button {
 
 .map-container {
   height: 100%;
-  min-height: 540px;
+  min-height: 560px;
   width: 100%;
+  background: #aad3df;
+}
+
+.map-container.leaflet-container {
+  background: #aad3df;
 }
 
 .label-overlay,
@@ -462,6 +568,8 @@ button {
 @media (max-width: 1180px) {
   .app-shell {
     grid-template-columns: 1fr;
+    height: auto;
+    overflow: visible;
   }
 
   .sidebar {
@@ -482,6 +590,7 @@ button {
 @media (max-width: 720px) {
   .content {
     padding: 12px;
+    grid-template-rows: 560px auto;
   }
 
   .stats-grid,

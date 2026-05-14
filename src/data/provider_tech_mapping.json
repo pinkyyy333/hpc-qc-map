@@ -1,0 +1,102 @@
+[
+  {
+    "provider": "Chalmers QAL9000",
+    "technology": "超導"
+  },
+  {
+    "provider": "IBM",
+    "technology": "超導"
+  },
+  {
+    "provider": "IBM Quantum",
+    "technology": "超導"
+  },
+  {
+    "provider": "IBM（ETH）",
+    "technology": "超導"
+  },
+  {
+    "provider": "IQM",
+    "technology": "超導"
+  },
+  {
+    "provider": "Origin Quantum",
+    "technology": "超導"
+  },
+  {
+    "provider": "QuantWare",
+    "technology": "超導"
+  },
+  {
+    "provider": "Rigetti",
+    "technology": "超導"
+  },
+  {
+    "provider": "CAS Quantum",
+    "technology": "超導"
+  },
+  {
+    "provider": "CASQ",
+    "technology": "超導"
+  },
+  {
+    "provider": "Fujitsu",
+    "technology": "超導"
+  },
+  {
+    "provider": "AQT",
+    "technology": "離子阱"
+  },
+  {
+    "provider": "IonQ",
+    "technology": "離子阱"
+  },
+  {
+    "provider": "Oxford Ionics",
+    "technology": "離子阱"
+  },
+  {
+    "provider": "Quantinuum",
+    "technology": "離子阱"
+  },
+  {
+    "provider": "Pasqal",
+    "technology": "中性原子"
+  },
+  {
+    "provider": "Aegiq",
+    "technology": "光量子"
+  },
+  {
+    "provider": "Orca",
+    "technology": "光量子"
+  },
+  {
+    "provider": "Xanadu",
+    "technology": "光量子"
+  },
+  {
+    "provider": "D-Wave",
+    "technology": "退火機"
+  },
+  {
+    "provider": "Quantum Brilliance",
+    "technology": "鑽石量子"
+  },
+  {
+    "provider": "RIKEN",
+    "technology": "超導"
+  },
+  {
+    "provider": "IISc Quantum Lab",
+    "technology": "超導"
+  },
+  {
+    "provider": "Anyon",
+    "technology": "超導"
+  },
+  {
+    "provider": "QCI",
+    "technology": "光量子"
+  }
+]
