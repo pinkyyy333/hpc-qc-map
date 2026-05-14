@@ -1,102 +1,102 @@
 [
   {
     "provider": "Chalmers QAL9000",
-    "technology": "超導"
+    "technology": "Superconducting"
   },
   {
     "provider": "IBM",
-    "technology": "超導"
+    "technology": "Superconducting"
   },
   {
     "provider": "IBM Quantum",
-    "technology": "超導"
+    "technology": "Superconducting"
   },
   {
-    "provider": "IBM（ETH）",
-    "technology": "超導"
+    "provider": "IBM ETH",
+    "technology": "Superconducting"
   },
   {
     "provider": "IQM",
-    "technology": "超導"
+    "technology": "Superconducting"
   },
   {
     "provider": "Origin Quantum",
-    "technology": "超導"
+    "technology": "Superconducting"
   },
   {
     "provider": "QuantWare",
-    "technology": "超導"
+    "technology": "Superconducting"
   },
   {
     "provider": "Rigetti",
-    "technology": "超導"
+    "technology": "Superconducting"
   },
   {
     "provider": "CAS Quantum",
-    "technology": "超導"
+    "technology": "Superconducting"
   },
   {
     "provider": "CASQ",
-    "technology": "超導"
+    "technology": "Superconducting"
   },
   {
     "provider": "Fujitsu",
-    "technology": "超導"
+    "technology": "Superconducting"
   },
   {
     "provider": "AQT",
-    "technology": "離子阱"
+    "technology": "Trapped Ion"
   },
   {
     "provider": "IonQ",
-    "technology": "離子阱"
+    "technology": "Trapped Ion"
   },
   {
     "provider": "Oxford Ionics",
-    "technology": "離子阱"
+    "technology": "Trapped Ion"
   },
   {
     "provider": "Quantinuum",
-    "technology": "離子阱"
+    "technology": "Trapped Ion"
   },
   {
     "provider": "Pasqal",
-    "technology": "中性原子"
+    "technology": "Neutral Atom"
   },
   {
     "provider": "Aegiq",
-    "technology": "光量子"
+    "technology": "Photonic"
   },
   {
     "provider": "Orca",
-    "technology": "光量子"
+    "technology": "Photonic"
   },
   {
     "provider": "Xanadu",
-    "technology": "光量子"
+    "technology": "Photonic"
   },
   {
     "provider": "D-Wave",
-    "technology": "退火機"
+    "technology": "Quantum Annealing"
   },
   {
     "provider": "Quantum Brilliance",
-    "technology": "鑽石量子"
+    "technology": "Diamond Quantum"
   },
   {
     "provider": "RIKEN",
-    "technology": "超導"
+    "technology": "Superconducting"
   },
   {
     "provider": "IISc Quantum Lab",
-    "technology": "超導"
+    "technology": "Superconducting"
   },
   {
     "provider": "Anyon",
-    "technology": "超導"
+    "technology": "Superconducting"
   },
   {
     "provider": "QCI",
-    "technology": "光量子"
+    "technology": "Photonic"
   }
 ]

@@ -137,6 +137,8 @@ const centers = rawCenters.map((center) => {
 
   return {
     ...center,
+    displayProvider: formatProvider(center.provider),
+    displayAddress: formatAddress(center.address),
     technologies,
     technologyLabel: technologies.join(' / ')
   }
@@ -183,7 +185,7 @@ const filteredCenters = computed(() => {
   return centers.filter((item) => {
     const matchesArea = activeArea.value === 'Global' || item.area === activeArea.value
     const matchesCountry = selectedCountries.value.has(item.country)
-    const text = `${item.countryRaw} ${item.country} ${item.institution} ${item.provider} ${item.address} ${item.area}`.toLowerCase()
+    const text = `${item.countryRaw} ${item.country} ${item.institution} ${item.displayProvider} ${item.displayAddress} ${item.area}`.toLowerCase()
     const matchesSearch = !keyword || text.includes(keyword)
     return matchesArea && matchesCountry && matchesSearch
   })
@@ -266,5 +268,58 @@ function normalizeProvider(value) {
     .toLowerCase()
     .normalize('NFKC')
     .replace(/[^\p{L}\p{N}]+/gu, '')
+}
+
+function formatProvider(value) {
+  return String(value || '')
+    .replaceAll('、', ', ')
+    .replaceAll('・', ', ')
+    .replaceAll('（', ' (')
+    .replaceAll('）', ')')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+function formatAddress(value) {
+  const address = String(value || '')
+  const exactAddresses = {
+    '300091新竹市東區展業一路26號': 'No. 26, Zhanye 1st Road, East District, Hsinchu City 300091, Taiwan',
+    '中國广东省深圳市南山区科研环路笃学路9': 'No. 9, Duxue Road, Keyan Ring Road, Nanshan District, Shenzhen, Guangdong Province, China'
+  }
+
+  if (exactAddresses[address]) {
+    return exactAddresses[address]
+  }
+
+  return address
+    .replaceAll('芬蘭', 'Finland')
+    .replaceAll('捷克', 'Czechia')
+    .replaceAll('德國', 'Germany')
+    .replaceAll('義大利', 'Italy')
+    .replaceAll('波蘭', 'Poland')
+    .replaceAll('法國', 'France')
+    .replaceAll('西班牙', 'Spain')
+    .replaceAll('英國', 'United Kingdom')
+    .replaceAll('迪考特', 'Didcot')
+    .replaceAll('美國', 'United States')
+    .replaceAll('新加坡', 'Singapore')
+    .replaceAll('日本', 'Japan')
+    .replaceAll('南韓', 'South Korea')
+    .replaceAll('以色列', 'Israel')
+    .replaceAll('中國', 'China')
+    .replaceAll('广东省', 'Guangdong Province')
+    .replaceAll('深圳市', 'Shenzhen')
+    .replaceAll('南山区', 'Nanshan District')
+    .replaceAll('科研环路', 'Keyan Ring Road')
+    .replaceAll('笃学路', 'Duxue Road')
+    .replaceAll('新竹市', 'Hsinchu City')
+    .replaceAll('東區', 'East District')
+    .replaceAll('展業一路', 'Zhanye 1st Road')
+    .replaceAll('中央第1つくば本部情報技術共同研究棟', 'Central 1 Tsukuba Headquarters Information Technology Joint Research Building')
+    .replaceAll('６階７階', '6F and 7F')
+    .replaceAll('號', '')
+    .replace(/^Japan〒/, 'Japan, ')
+    .replace(/(\d)(United States|Japan|Finland|Czechia|Germany|Italy|Poland|France|Spain|Singapore|South Korea|Israel)$/u, '$1, $2')
+    .trim()
 }
 </script>

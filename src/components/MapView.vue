@@ -37,7 +37,7 @@
     </div>
 
     <article v-if="selectedCenter" class="detail-card">
-      <button class="close-button" @click="selectedCenter = null">?</button>
+      <button class="close-button" aria-label="Close details" @click="selectedCenter = null">x</button>
       <p class="eyebrow">{{ selectedCenter.area }}</p>
       <h2>{{ selectedCenter.institution }}</h2>
       <dl>
@@ -47,11 +47,11 @@
         </div>
         <div>
           <dt>Provider</dt>
-          <dd>{{ selectedCenter.provider }}</dd>
+          <dd>{{ selectedCenter.displayProvider }}</dd>
         </div>
         <div>
           <dt>Address</dt>
-          <dd>{{ selectedCenter.address }}</dd>
+          <dd>{{ selectedCenter.displayAddress }}</dd>
         </div>
       </dl>
     </article>
@@ -133,7 +133,7 @@ onMounted(() => {
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 18,
-    attribution: '穢 OpenStreetMap contributors'
+    attribution: '&copy; OpenStreetMap contributors'
   }).addTo(map)
 
   map.on('move zoom resize moveend zoomend viewreset', scheduleUpdateLabels)
@@ -183,7 +183,7 @@ function createMarker(center) {
     <div class="popup-card">
       <strong>${escapeHtml(center.institution)}</strong>
       <p>${escapeHtml(center.countryRaw)}</p>
-      <p><b>Provider:</b> ${escapeHtml(center.provider)}</p>
+      <p><b>Provider:</b> ${escapeHtml(center.displayProvider)}</p>
     </div>
   `)
 
@@ -209,7 +209,7 @@ function formatMarkerLabel(center) {
     <div class="marker-label-content">
       <div><b>Country:</b> ${escapeHtml(center.country)}</div>
       <div><b>Institution:</b> ${escapeHtml(center.institution)}</div>
-      <div><b>Provider:</b> ${escapeHtml(center.provider)}</div>
+      <div><b>Provider:</b> ${escapeHtml(center.displayProvider)}</div>
     </div>
   `
 }
@@ -310,7 +310,7 @@ function updateLabels() {
       y: Math.round(box.y),
       country: box.center.country,
       institution: box.center.institution,
-      provider: box.center.provider,
+      provider: box.center.displayProvider,
       className: areaLabelClasses[box.center.area] || 'marker-label--default'
     }))
 

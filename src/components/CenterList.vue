@@ -20,8 +20,8 @@
           <small>{{ center.area }}</small>
         </div>
         <h3>{{ center.institution }}</h3>
-        <p><strong>Provider:</strong> {{ center.provider }}</p>
-        <p class="address">{{ center.address }}</p>
+        <p><strong>Provider:</strong> {{ center.displayProvider }}</p>
+        <p class="address">{{ center.displayAddress }}</p>
       </button>
 
       <div v-if="centers.length === 0" class="empty-state">
