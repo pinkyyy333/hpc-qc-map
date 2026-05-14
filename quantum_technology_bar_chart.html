@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>量子技術類型長條圖</title>
+    <style>
+      :root {
+        color-scheme: light;
+        font-family: "Noto Sans TC", "Microsoft JhengHei", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: #1f2937;
+        background: #f7f8fb;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        padding: 28px;
+        background: #f7f8fb;
+      }
+
+      main {
+        width: min(980px, 100%);
+        margin: 0 auto;
+        padding: 18px 18px 24px;
+        background: #ffffff;
+      }
+
+      .legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 18px;
+        align-items: center;
+        margin: 0 0 22px;
+        padding: 0;
+        list-style: none;
+      }
+
+      h1 {
+        margin: 4px 0 18px;
+        color: #1f2937;
+        font-size: 24px;
+        line-height: 1.25;
+        text-align: center;
+      }
+
+      .legend li {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        color: #4b5563;
+        font-size: 15px;
+      }
+
+      .legend i {
+        width: 13px;
+        height: 13px;
+        border-radius: 3px;
+        background: var(--bar-color);
+      }
+
+      .chart-layout {
+        display: grid;
+        grid-template-columns: 44px 58px 1fr;
+        grid-template-rows: 400px 44px 34px;
+        column-gap: 14px;
+      }
+
+      .y-title {
+        grid-column: 1;
+        grid-row: 1;
+        align-self: center;
+        justify-self: center;
+        color: #7b7f86;
+        font-size: 15px;
+        letter-spacing: 0.04em;
+        line-height: 1.35;
+        text-align: center;
+        writing-mode: vertical-rl;
+      }
+
+      .plot {
+        --chart-max: 32;
+        position: relative;
+        grid-column: 3;
+        grid-row: 1;
+        display: grid;
+        grid-template-columns: repeat(var(--bar-count), minmax(72px, 1fr));
+        align-items: end;
+        gap: 28px;
+        padding: 0 24px;
+        border-left: 1px solid #d8dce3;
+        border-bottom: 1px solid #d8dce3;
+        background:
+          linear-gradient(to bottom, #e7e9ee 1px, transparent 1px) 0 0 / 100% 12.5%,
+          #ffffff;
+      }
+
+      .tick-labels {
+        grid-column: 2;
+        grid-row: 1;
+        position: relative;
+        color: #7b7f86;
+        font-size: 14px;
+      }
+
+      .tick {
+        position: absolute;
+        right: 0;
+        transform: translateY(50%);
+      }
+
+      .bar-wrap {
+        position: relative;
+        display: flex;
+        align-items: end;
+        justify-content: center;
+        height: 100%;
+        min-width: 0;
+      }
+
+      .bar {
+        width: min(118px, 78%);
+        height: calc((var(--value) / var(--chart-max)) * 100%);
+        min-height: 8px;
+        border: 1px solid color-mix(in srgb, var(--bar-color), #111827 24%);
+        border-radius: 6px 6px 4px 4px;
+        background: linear-gradient(180deg, color-mix(in srgb, var(--bar-color), #ffffff 14%), var(--bar-color));
+        box-shadow: 0 7px 16px rgba(15, 23, 42, 0.12);
+        transition:
+          transform 0.16s ease,
+          box-shadow 0.16s ease,
+          filter 0.16s ease;
+      }
+
+      .value-label {
+        position: absolute;
+        left: 50%;
+        bottom: calc((var(--value) / var(--chart-max)) * 100% + 8px);
+        color: #4b5563;
+        font-size: 15px;
+        font-weight: 700;
+        transform: translateX(-50%);
+      }
+
+      .bar-wrap:hover .bar,
+      .bar-wrap:focus-within .bar {
+        transform: translateY(-3px);
+        filter: saturate(1.08);
+        box-shadow: 0 12px 24px rgba(15, 23, 42, 0.18);
+      }
+
+      .x-axis {
+        grid-column: 3;
+        grid-row: 2;
+        display: grid;
+        grid-template-columns: repeat(var(--bar-count), minmax(72px, 1fr));
+        gap: 28px;
+        padding: 10px 24px 0;
+        color: #6b7280;
+        font-size: 16px;
+        font-weight: 600;
+        text-align: center;
+      }
+
+      .x-axis span {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .x-title {
+        grid-column: 3;
+        grid-row: 3;
+        align-self: end;
+        color: #7b7f86;
+        font-size: 15px;
+        letter-spacing: 0.04em;
+        text-align: center;
+      }
+
+      .tooltip {
+        position: absolute;
+        left: 50%;
+        bottom: calc(100% + 12px);
+        z-index: 10;
+        width: min(320px, 82vw);
+        padding: 12px 14px;
+        border-radius: 10px;
+        background: #172033;
+        color: #f8fafc;
+        box-shadow: 0 16px 34px rgba(15, 23, 42, 0.24);
+        font-size: 13px;
+        line-height: 1.5;
+        opacity: 0;
+        pointer-events: none;
+        transform: translate(-50%, 6px);
+        transition: 0.16s ease;
+      }
+
+      .tooltip strong,
+      .tooltip span {
+        display: block;
+      }
+
+      .tooltip span {
+        margin: 2px 0 6px;
+        color: #cbd5e1;
+      }
+
+      .tooltip p {
+        max-height: 108px;
+        margin: 0;
+        overflow: auto;
+      }
+
+      .bar-wrap:hover .tooltip,
+      .bar-wrap:focus-within .tooltip {
+        opacity: 1;
+        transform: translate(-50%, 0);
+      }
+
+      @media (max-width: 760px) {
+        body {
+          padding: 14px;
+        }
+
+        main {
+          overflow-x: auto;
+        }
+
+        .chart-layout {
+          min-width: 720px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <ul id="legend" class="legend" aria-label="圖例"></ul>
+      <h1>量子運算技術類型統計</h1>
+
+      <section class="chart-layout" aria-label="量子技術類型柱狀圖">
+        <div class="y-title">採用此技術的中心數</div>
+        <div id="tickLabels" class="tick-labels" aria-hidden="true"></div>
+        <div id="plot" class="plot"></div>
+        <div id="xAxis" class="x-axis" aria-hidden="true"></div>
+        <div class="x-title">量子運算技術類型</div>
+      </section>
+    </main>
+
+    <script>
+      const data = [
+        {
+          name: "超導",
+          count: 30,
+          color: "#3b82f6",
+          providers: [
+            "Anyon",
+            "D-Wave・IQM・Pasqal・IBM",
+            "Fujitsu、IBM",
+            "Fujitsu、IBM、Quantinuum",
+            "IBM",
+            "IBM、Chalmers QAL9000",
+            "IBM、D-Wave、QCI",
+            "IBM、Rigetti、Quantinuum",
+            "IBM、cloud",
+            "IISc Quantum Lab、IBM Quantum",
+            "IQM",
+            "IQM、IBM（ETH）",
+            "IQM、Microsoft Azure Quantum",
+            "Origin Quantum、CAS Quantum",
+            "Origin Quantum、CASQ",
+            "Pasqal、IQM、D-Wave、AWS",
+            "RIKEN",
+            "Rigetti、AQT、QuantWare、IBM Quantum",
+            "Rigetti、IBM"
+          ]
+        },
+        {
+          name: "離子阱",
+          count: 7,
+          color: "#10a37f",
+          providers: [
+            "Aegiq、Oxford Ionics",
+            "Fujitsu、IBM、Quantinuum",
+            "IBM、Rigetti、Quantinuum",
+            "IonQ、AWS Braket",
+            "Orca、Quantinuum、AWS Braket",
+            "Quantinuum",
+            "Rigetti、AQT、QuantWare、IBM Quantum"
+          ]
+        },
+        {
+          name: "中性原子",
+          count: 3,
+          color: "#f97316",
+          providers: [
+            "D-Wave・IQM・Pasqal・IBM",
+            "Pasqal",
+            "Pasqal、IQM、D-Wave、AWS"
+          ]
+        },
+        {
+          name: "光量子",
+          count: 4,
+          color: "#8b7cf6",
+          providers: [
+            "Aegiq、Oxford Ionics",
+            "IBM、D-Wave、QCI",
+            "Orca、Quantinuum、AWS Braket",
+            "Xanadu"
+          ]
+        },
+        {
+          name: "退火機",
+          count: 3,
+          color: "#c98210",
+          providers: [
+            "D-Wave・IQM・Pasqal・IBM",
+            "IBM、D-Wave、QCI",
+            "Pasqal、IQM、D-Wave、AWS"
+          ]
+        },
+        {
+          name: "鑽石量子",
+          count: 1,
+          color: "#e85d9e",
+          providers: ["Quantum Brilliance、AWS Braket"]
+        }
+      ]
+
+      const chartMax = 32
+      const ticks = [30, 25, 20, 15, 10, 5, 0]
+      const legend = document.querySelector("#legend")
+      const tickLabels = document.querySelector("#tickLabels")
+      const plot = document.querySelector("#plot")
+      const xAxis = document.querySelector("#xAxis")
+
+      plot.style.setProperty("--bar-count", data.length)
+      xAxis.style.setProperty("--bar-count", data.length)
+
+      legend.innerHTML = data
+        .map(
+          (item) => `
+            <li>
+              <i style="--bar-color: ${item.color}"></i>
+              <span>${item.name}</span>
+            </li>
+          `
+        )
+        .join("")
+
+      tickLabels.innerHTML = ticks
+        .map((tick) => {
+          const bottom = (tick / chartMax) * 100
+          return `<span class="tick" style="bottom: ${bottom}%">${tick} 個</span>`
+        })
+        .join("")
+
+      plot.innerHTML = data
+        .map(
+          (item) => `
+            <article class="bar-wrap" tabindex="0" style="--value: ${item.count}; --bar-color: ${item.color}">
+              <div class="bar" aria-label="${item.name}: ${item.count} 個"></div>
+              <div class="value-label">${item.count}</div>
+              <div class="tooltip" role="tooltip">
+                <strong>${item.name}: ${item.count} 個</strong>
+                <span>${item.providers.length} providers</span>
+                <p>${item.providers.join(", ")}</p>
+              </div>
+            </article>
+          `
+        )
+        .join("")
+
+      xAxis.innerHTML = data.map((item) => `<span>${item.name}</span>`).join("")
+    </script>
+  </body>
+</html>
