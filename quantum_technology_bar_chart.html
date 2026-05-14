@@ -1,13 +1,13 @@
 <!doctype html>
-<html lang="zh-Hant">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>量子技術類型長條圖</title>
+    <title>Quantum Technology Types Bar Chart</title>
     <style>
       :root {
         color-scheme: light;
-        font-family: "Noto Sans TC", "Microsoft JhengHei", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         color: #1f2937;
         background: #f7f8fb;
       }
@@ -242,96 +242,96 @@
   </head>
   <body>
     <main>
-      <ul id="legend" class="legend" aria-label="圖例"></ul>
-      <h1>量子運算技術類型統計</h1>
+      <ul id="legend" class="legend" aria-label="Legend"></ul>
+      <h1>Quantum Computing Technology Types</h1>
 
-      <section class="chart-layout" aria-label="量子技術類型柱狀圖">
-        <div class="y-title">採用此技術的中心數</div>
+      <section class="chart-layout" aria-label="Bar chart of quantum technology types">
+        <div class="y-title">Number of centers using this technology</div>
         <div id="tickLabels" class="tick-labels" aria-hidden="true"></div>
         <div id="plot" class="plot"></div>
         <div id="xAxis" class="x-axis" aria-hidden="true"></div>
-        <div class="x-title">量子運算技術類型</div>
+        <div class="x-title">Quantum computing technology type</div>
       </section>
     </main>
 
     <script>
       const data = [
         {
-          name: "超導",
+          name: "Superconducting",
           count: 30,
           color: "#3b82f6",
           providers: [
             "Anyon",
-            "D-Wave・IQM・Pasqal・IBM",
-            "Fujitsu、IBM",
-            "Fujitsu、IBM、Quantinuum",
+            "D-Wave / IQM / Pasqal / IBM",
+            "Fujitsu, IBM",
+            "Fujitsu, IBM, Quantinuum",
             "IBM",
-            "IBM、Chalmers QAL9000",
-            "IBM、D-Wave、QCI",
-            "IBM、Rigetti、Quantinuum",
-            "IBM、cloud",
-            "IISc Quantum Lab、IBM Quantum",
+            "IBM, Chalmers QAL9000",
+            "IBM, D-Wave, QCI",
+            "IBM, Rigetti, Quantinuum",
+            "IBM, cloud",
+            "IISc Quantum Lab, IBM Quantum",
             "IQM",
-            "IQM、IBM（ETH）",
-            "IQM、Microsoft Azure Quantum",
-            "Origin Quantum、CAS Quantum",
-            "Origin Quantum、CASQ",
-            "Pasqal、IQM、D-Wave、AWS",
+            "IQM, IBM (ETH)",
+            "IQM, Microsoft Azure Quantum",
+            "Origin Quantum, CAS Quantum",
+            "Origin Quantum, CASQ",
+            "Pasqal, IQM, D-Wave, AWS",
             "RIKEN",
-            "Rigetti、AQT、QuantWare、IBM Quantum",
-            "Rigetti、IBM"
+            "Rigetti, AQT, QuantWare, IBM Quantum",
+            "Rigetti, IBM"
           ]
         },
         {
-          name: "離子阱",
+          name: "Trapped Ion",
           count: 7,
           color: "#10a37f",
           providers: [
-            "Aegiq、Oxford Ionics",
-            "Fujitsu、IBM、Quantinuum",
-            "IBM、Rigetti、Quantinuum",
-            "IonQ、AWS Braket",
-            "Orca、Quantinuum、AWS Braket",
+            "Aegiq, Oxford Ionics",
+            "Fujitsu, IBM, Quantinuum",
+            "IBM, Rigetti, Quantinuum",
+            "IonQ, AWS Braket",
+            "Orca, Quantinuum, AWS Braket",
             "Quantinuum",
-            "Rigetti、AQT、QuantWare、IBM Quantum"
+            "Rigetti, AQT, QuantWare, IBM Quantum"
           ]
         },
         {
-          name: "中性原子",
+          name: "Neutral Atom",
           count: 3,
           color: "#f97316",
           providers: [
-            "D-Wave・IQM・Pasqal・IBM",
+            "D-Wave / IQM / Pasqal / IBM",
             "Pasqal",
-            "Pasqal、IQM、D-Wave、AWS"
+            "Pasqal, IQM, D-Wave, AWS"
           ]
         },
         {
-          name: "光量子",
+          name: "Photonic",
           count: 4,
           color: "#8b7cf6",
           providers: [
-            "Aegiq、Oxford Ionics",
-            "IBM、D-Wave、QCI",
-            "Orca、Quantinuum、AWS Braket",
+            "Aegiq, Oxford Ionics",
+            "IBM, D-Wave, QCI",
+            "Orca, Quantinuum, AWS Braket",
             "Xanadu"
           ]
         },
         {
-          name: "退火機",
+          name: "Quantum Annealing",
           count: 3,
           color: "#c98210",
           providers: [
-            "D-Wave・IQM・Pasqal・IBM",
-            "IBM、D-Wave、QCI",
-            "Pasqal、IQM、D-Wave、AWS"
+            "D-Wave / IQM / Pasqal / IBM",
+            "IBM, D-Wave, QCI",
+            "Pasqal, IQM, D-Wave, AWS"
           ]
         },
         {
-          name: "鑽石量子",
+          name: "Diamond Quantum",
           count: 1,
           color: "#e85d9e",
-          providers: ["Quantum Brilliance、AWS Braket"]
+          providers: ["Quantum Brilliance, AWS Braket"]
         }
       ]
 
@@ -359,7 +359,7 @@
       tickLabels.innerHTML = ticks
         .map((tick) => {
           const bottom = (tick / chartMax) * 100
-          return `<span class="tick" style="bottom: ${bottom}%">${tick} 個</span>`
+          return `<span class="tick" style="bottom: ${bottom}%">${tick}</span>`
         })
         .join("")
 
@@ -367,10 +367,10 @@
         .map(
           (item) => `
             <article class="bar-wrap" tabindex="0" style="--value: ${item.count}; --bar-color: ${item.color}">
-              <div class="bar" aria-label="${item.name}: ${item.count} 個"></div>
+              <div class="bar" aria-label="${item.name}: ${item.count} centers"></div>
               <div class="value-label">${item.count}</div>
               <div class="tooltip" role="tooltip">
-                <strong>${item.name}: ${item.count} 個</strong>
+                <strong>${item.name}: ${item.count} centers</strong>
                 <span>${item.providers.length} providers</span>
                 <p>${item.providers.join(", ")}</p>
               </div>
